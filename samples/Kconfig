@@ -282,6 +282,14 @@ config SAMPLE_KMEMLEAK
 
 source "samples/rust/Kconfig"
 
+config SAMPLE_HELLO_WORLD
+        tristate "Build hello world example"
+        help
+          This config option will allow you to build a hello world
+          example which prints some string and nothing more. At the
+          momemt this is the only purpose of this module, but 1-3
+          strings is not enough to make checkpatch.pl happy.
+
 endif # SAMPLES
 
 config HAVE_SAMPLE_FTRACE_DIRECT
