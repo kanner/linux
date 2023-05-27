@@ -727,6 +727,25 @@ int proc_dobool(struct ctl_table *table, int write, void *buffer,
 }
 
 /**
+ * proc_panic_handler - execute panic for testing purposes
+ */
+static int proc_panic_handler(struct ctl_table *table, int write, void *buffer,
+			      size_t *lenp, loff_t *ppos)
+{
+	int tmp, ret;
+
+	ret = __do_proc_dointvec(&tmp, table, write, buffer,
+				 lenp, ppos, NULL, NULL);
+	if (ret || !write)
+		return ret;
+
+	if (write)
+		panic("akanner: test panic invoked");
+
+	return 0;
+}
+
+/**
  * proc_dointvec - read a vector of integers
  * @table: the sysctl table
  * @write: %TRUE if this is a write to the sysctl file
@@ -1616,6 +1635,13 @@ int proc_do_static_key(struct ctl_table *table, int write,
 }
 
 static struct ctl_table kern_table[] = {
+	{
+		.procname	= "panic_test_akanner",
+		.data		= NULL,
+		.maxlen		= sizeof(int),
+		.mode		= 0644,
+		.proc_handler	= proc_panic_handler,
+	},
 	{
 		.procname	= "panic",
 		.data		= &panic_timeout,
