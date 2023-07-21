@@ -1582,7 +1582,13 @@ static void tun_rx_batched(struct tun_struct *tun, struct tun_file *tfile,
 static bool tun_can_build_skb(struct tun_struct *tun, struct tun_file *tfile,
 			      int len, int noblock, bool zerocopy, int *skb_xdp)
 {
-	if (SKB_DATA_ALIGN(len + TUN_RX_PAD) +
+	int pad = TUN_RX_PAD;
+	struct bpf_prog *xdp_prog = rcu_dereference(tun->xdp_prog);
+
+	if (xdp_prog)
+		pad += XDP_PACKET_HEADROOM;
+
+	if (SKB_DATA_ALIGN(len + pad) +
 	    SKB_DATA_ALIGN(sizeof(struct skb_shared_info)) > PAGE_SIZE) {
 		*skb_xdp = 0;
 		return false;
