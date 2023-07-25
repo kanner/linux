@@ -1,0 +1,8 @@
+V1 -> V2:
+* merged 2 patches in 1, fixing both issues: WARN_ON_ONCE with
+  syzkaller repro and missing XDP_PACKET_HEADROOM in pad
+* changed the title and description of the execution path, suggested
+  by Jason Wang <jasowang@redhat.com>
+* move the limit check from tun_can_build_skb() to tun_build_skb() to
+  remove duplication and locking issue, and also drop the packet in
+  case of a failed check - noted by Jason Wang <jasowang@redhat.com>
