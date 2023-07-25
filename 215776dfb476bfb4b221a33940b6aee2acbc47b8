@@ -1,3 +1,5 @@
+V2 -> V3:
+* attach the forgotten changelog
 V1 -> V2:
 * merged 2 patches in 1, fixing both issues: WARN_ON_ONCE with
   syzkaller repro and missing XDP_PACKET_HEADROOM in pad
