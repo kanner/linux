@@ -1,5 +1,6 @@
 v3 -> v4:
-* fall back to v1, fixing only missing XDP_PACKET_HEADROOM in pad
+* fall back to v1, fixing only missing XDP_PACKET_HEADROOM in pad and
+  removing bpf_xdp_adjust_tail() check for frame_sz.
 * added rcu read lock, noted by Jason Wang <jasowang@redhat.com> in v1
 * I decided to leave the packet length check in tun_can_build_skb()
   instead of moving to tun_build_skb() suggested by Jason Wang
