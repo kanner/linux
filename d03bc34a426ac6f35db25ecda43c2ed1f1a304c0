@@ -1,0 +1,10 @@
+v5:
+* same as v4, but cc-ed bpf@vger.kernel.org according to v3->v4 change
+
+v4:
+* remove bpf_xdp_adjust_tail() check for frame_sz instead.
+
+v1-v3:
+* initial attempts to fix drivers/net/tun.c:tun_get_user(),
+  e.g. tun_build_skb() or tun_alloc_skb(), to not exceed xdp->frame_sz
+  check from net/core/filter.c
