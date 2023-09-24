@@ -1,0 +1,41 @@
+v3:
+  - free kzalloc-ed memory before return, the leak was noticed by
+    Daniel Borkmann <daniel@iogearbox.net>
+v2: https://lore.kernel.org/all/20231002222939.1519-1-andrew.kanner@gmail.com/raw
+  - use unlikely() optimization for the case with SIZE_MAX return from
+    struct_size(), suggested by Alexander Lobakin
+    <aleksander.lobakin@intel.com>
+  - cc-ed 4 more maintainers, mentioned by cc_maintainers patchwork
+    test
+
+v1: https://lore.kernel.org/all/20230928204440.543-1-andrew.kanner@gmail.com/T/
+  - RFC notes:
+    It was found that net/xdp/xsk.c:xsk_setsockopt() uses
+    copy_from_sockptr() to get the number of entries (int) for cases
+    with XDP_RX_RING / XDP_TX_RING and XDP_UMEM_FILL_RING /
+    XDP_UMEM_COMPLETION_RING.
+
+    Next in xsk_init_queue() there're 2 sanity checks (entries == 0)
+    and (!is_power_of_2(entries)) for which -EINVAL will be returned.
+
+    After that net/xdp/xsk_queue.c:xskq_create() will calculate the
+    size multipling the number of entries (int) with the size of u64,
+    at least.
+
+    I wonder if there should be the upper bound (e.g. the 3rd sanity
+    check inside xsk_init_queue()). It seems that without the upper
+    limit it's quiet easy to overflow the allocated size (SIZE_MAX),
+    especially for 32-bit architectures, for example arm nodes which
+    were used by the syzkaller.
+
+    In this patch I added a naive check for SIZE_MAX which helped to
+    skip zero-size allocation after overflow, but maybe it's not quite
+    right. Please, suggest if you have any thoughts about the
+    appropriate limit for the size of these xdp rings.
+
+    PS: the initial number of entries is 0x20000000 in syzkaller
+    repro: syscall(__NR_setsockopt, (intptr_t)r[0], 0x11b, 3,
+    0x20000040, 0x20);
+
+    Link:
+    https://syzkaller.appspot.com/text?tag=ReproC&x=10910f18280000
