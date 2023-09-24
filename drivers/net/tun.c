@@ -1597,7 +1597,7 @@ static bool tun_can_build_skb(struct tun_struct *tun, struct tun_file *tfile,
 		return false;
 
 	if (SKB_DATA_ALIGN(len + TUN_RX_PAD + XDP_PACKET_HEADROOM) +
-	    SKB_DATA_ALIGN(sizeof(struct skb_shared_info)) > PAGE_SIZE)
+	    SKB_DATA_ALIGN(sizeof(struct skb_shared_info)) > SKB_FRAG_PAGE_SIZE)
 		return false;
 
 	return true;
