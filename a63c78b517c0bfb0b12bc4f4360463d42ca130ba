@@ -2,6 +2,8 @@ v2:
   - use unlikely() optimization for the case with SIZE_MAX return from
     struct_size(), suggested by Alexander Lobakin
     <aleksander.lobakin@intel.com>
+  - cc-ed 4 more maintainers, mentioned by cc_maintainers patchwork
+    test
 
 v1: https://lore.kernel.org/all/20230928204440.543-1-andrew.kanner@gmail.com/T/
   - RFC notes:
