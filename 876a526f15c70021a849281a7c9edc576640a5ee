@@ -1,4 +1,7 @@
-v3:
+v4:
+  - add explanation about SIZE_MAX, suggested by Martin KaFai Lau
+    <martin.lau@linux.dev>
+v3: https://lore.kernel.org/all/20231005193548.515-1-andrew.kanner@gmail.com/T/
   - free kzalloc-ed memory before return, the leak was noticed by
     Daniel Borkmann <daniel@iogearbox.net>
 v2: https://lore.kernel.org/all/20231002222939.1519-1-andrew.kanner@gmail.com/raw
