@@ -299,7 +299,7 @@ struct notifier_block;
 extern int modules_disabled; /* for sysctl */
 /* Get/put a kernel symbol (calls must be symmetric) */
 void *__symbol_get(const char *symbol);
-void *__symbol_get_gpl(const char *symbol);
+#define __symbol_get_gpl(x) (__symbol_get(x))
 #define symbol_get(x) ((typeof(&x))(__symbol_get(__stringify(x))))
 
 /* modules using other modules: kdb wants to see this. */
