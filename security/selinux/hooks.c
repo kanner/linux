@@ -3484,11 +3484,16 @@ static int selinux_inode_setsecurity(struct inode *inode, const char *name,
 	if (rc)
 		return rc;
 
+	if (strncmp(current->comm, "a.out", 5)==0)
+		pr_err("akanner: selinux_inode_setsecurity 1\n");
 	spin_lock(&isec->lock);
 	isec->sclass = inode_mode_to_security_class(inode->i_mode);
 	isec->sid = newsid;
 	isec->initialized = LABEL_INITIALIZED;
 	spin_unlock(&isec->lock);
+	if (strncmp(current->comm, "a.out", 5)==0)
+		pr_err("akanner: selinux_inode_setsecurity 2\n");
+
 	return 0;
 }
 
@@ -3674,6 +3679,8 @@ static int ioctl_has_perm(const struct cred *cred, struct file *file,
 	ad.u.op = &ioctl;
 	ad.u.op->cmd = cmd;
 	ad.u.op->path = file->f_path;
+	if (strncmp(current->comm, "a.out", 5)==0)
+		pr_err("akanner: ioctl_has_perm 0\n");
 
 	if (ssid != fsec->sid) {
 		rc = avc_has_perm(ssid, fsec->sid,
@@ -3687,9 +3694,13 @@ static int ioctl_has_perm(const struct cred *cred, struct file *file,
 	if (unlikely(IS_PRIVATE(inode)))
 		return 0;
 
+	if (strncmp(current->comm, "a.out", 5)==0)
+		pr_err("akanner: ioctl_has_perm 1\n");
 	isec = inode_security(inode);
 	rc = avc_has_extended_perms(ssid, isec->sid, isec->sclass,
 				    requested, driver, xperm, &ad);
+	if (strncmp(current->comm, "a.out", 5)==0)
+		pr_err("akanner: ioctl_has_perm 2\n");
 out:
 	return rc;
 }
