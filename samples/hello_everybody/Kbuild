@@ -1,0 +1,4 @@
+# SPDX-License-Identifier: GPL
+
+obj-$(CONFIG_HELLO_MODULE) := hello_everybody.o
+CFLAGS_hello_everybody.o := -DDEBUG

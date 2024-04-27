@@ -291,6 +291,11 @@ config SAMPLE_CGROUP
 	help
 	  Build samples that demonstrate the usage of the cgroup API.
 
+config HELLO_MODULE
+	tristate "Build greeter"
+	help
+	  Build module that greets the world when installed.
+
 source "samples/rust/Kconfig"
 
 endif # SAMPLES
