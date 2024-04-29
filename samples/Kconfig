@@ -295,6 +295,7 @@ config HELLO_MODULE
 	tristate "Build greeter"
 	help
 	  Build module that greets the world when installed.
+	  This module also creates directory in debugfs with jiffies file.
 
 source "samples/rust/Kconfig"
 
