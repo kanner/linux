@@ -295,7 +295,10 @@ config HELLO_MODULE
 	tristate "Build greeter"
 	help
 	  Build module that greets the world when installed.
-	  This module also creates directory in debugfs with jiffies file.
+	  This module also creates directory in debugfs with jiffies file and data file.
+	  Root user can write in this file up to PAGE_SIZE bytes.
+	  Other users can only read from it.
+	  This file always contains PAGE_SIZE bytes.
 
 source "samples/rust/Kconfig"
 
