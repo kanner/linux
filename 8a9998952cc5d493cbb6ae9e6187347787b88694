@@ -1,0 +1,2 @@
+v2: remove rc check completely, suggested by Joseph Qi <joseph.qi@linux.alibaba.com>
+v1: https://lore.kernel.org/all/20241029224304.2169092-2-andrew.kanner@gmail.com/T/
