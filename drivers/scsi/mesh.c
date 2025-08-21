@@ -1090,14 +1090,10 @@ static void handle_error(struct mesh_state *ms)
 		if (exc & EXC_RESELECTED) {
 			/* This can happen if we issue a command to
 			   get the bus just after the target reselects us. */
-			static int mesh_resel_seqerr;
-			mesh_resel_seqerr++;
 			reselected(ms);
 			return;
 		}
 		if (exc == EXC_PHASEMM) {
-			static int mesh_phasemm_seqerr;
-			mesh_phasemm_seqerr++;
 			phase_mismatch(ms);
 			return;
 		}
@@ -1126,8 +1122,6 @@ static void handle_exception(struct mesh_state *ms)
 	exc = in_8(&mr->exception);
 	out_8(&mr->interrupt, INT_EXCEPTION | INT_CMDDONE);
 	if (exc & EXC_RESELECTED) {
-		static int mesh_resel_exc;
-		mesh_resel_exc++;
 		reselected(ms);
 	} else if (exc == EXC_ARBLOST) {
 		printk(KERN_DEBUG "mesh: lost arbitration\n");
