@@ -625,7 +625,7 @@ print_fentry_event(struct trace_iterator *iter, int flags,
 	tp = trace_probe_primary_from_call(
 		container_of(event, struct trace_event_call, event));
 	if (WARN_ON_ONCE(!tp))
-		return trace_handle_return(s);
+		goto out;
 
 	trace_seq_printf(s, "%s: (", trace_probe_name(tp));
 
@@ -655,7 +655,7 @@ print_fexit_event(struct trace_iterator *iter, int flags,
 	tp = trace_probe_primary_from_call(
 		container_of(event, struct trace_event_call, event));
 	if (WARN_ON_ONCE(!tp))
-		return trace_handle_return(s);
+		goto out;
 
 	trace_seq_printf(s, "%s: (", trace_probe_name(tp));
 

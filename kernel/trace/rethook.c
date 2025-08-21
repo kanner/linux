@@ -143,6 +143,11 @@ void rethook_recycle(struct rethook_node *node)
 {
 	rethook_handler_t handler;
 
+	if (WARN_ON_ONCE(!node->rethook)) {
+		call_rcu(&node->rcu, free_rethook_node_rcu);
+		return;
+	}
+
 	handler = rethook_get_handler(node->rethook);
 	if (likely(handler))
 		objpool_push(node, &node->rethook->pool);
@@ -306,6 +311,8 @@ unsigned long rethook_trampoline_handler(struct pt_regs *regs,
 	while (first) {
 		rhn = container_of(first, struct rethook_node, llist);
 		if (WARN_ON_ONCE(rhn->frame != frame))
+			break;
+		if (WARN_ON_ONCE(!rhn->rethook))
 			break;
 		handler = rethook_get_handler(rhn->rethook);
 		if (handler)
